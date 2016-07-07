@@ -1,0 +1,147 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> table
+Rule 1     table -> init_mark table_pmb LPAREN columns RPAREN
+Rule 2     init_mark -> <empty>
+Rule 3     table_pmb -> CREATE TABLE ID
+Rule 4     columns -> ID DATATYPE
+Rule 5     columns -> columns COMMA ID DATATYPE
+
+Terminals, with rules where they appear
+
+COMMA                : 5
+CREATE               : 3
+DATATYPE             : 4 5
+ID                   : 3 4 5
+LPAREN               : 1
+RPAREN               : 1
+TABLE                : 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+columns              : 1 5
+init_mark            : 1
+table                : 0
+table_pmb            : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . table
+    (1) table -> . init_mark table_pmb LPAREN columns RPAREN
+    (2) init_mark -> .
+
+    CREATE          reduce using rule 2 (init_mark -> .)
+
+    table                          shift and go to state 1
+    init_mark                      shift and go to state 2
+
+state 1
+
+    (0) S' -> table .
+
+
+
+state 2
+
+    (1) table -> init_mark . table_pmb LPAREN columns RPAREN
+    (3) table_pmb -> . CREATE TABLE ID
+
+    CREATE          shift and go to state 3
+
+    table_pmb                      shift and go to state 4
+
+state 3
+
+    (3) table_pmb -> CREATE . TABLE ID
+
+    TABLE           shift and go to state 5
+
+
+state 4
+
+    (1) table -> init_mark table_pmb . LPAREN columns RPAREN
+
+    LPAREN          shift and go to state 6
+
+
+state 5
+
+    (3) table_pmb -> CREATE TABLE . ID
+
+    ID              shift and go to state 7
+
+
+state 6
+
+    (1) table -> init_mark table_pmb LPAREN . columns RPAREN
+    (4) columns -> . ID DATATYPE
+    (5) columns -> . columns COMMA ID DATATYPE
+
+    ID              shift and go to state 8
+
+    columns                        shift and go to state 9
+
+state 7
+
+    (3) table_pmb -> CREATE TABLE ID .
+
+    LPAREN          reduce using rule 3 (table_pmb -> CREATE TABLE ID .)
+
+
+state 8
+
+    (4) columns -> ID . DATATYPE
+
+    DATATYPE        shift and go to state 10
+
+
+state 9
+
+    (1) table -> init_mark table_pmb LPAREN columns . RPAREN
+    (5) columns -> columns . COMMA ID DATATYPE
+
+    RPAREN          shift and go to state 11
+    COMMA           shift and go to state 12
+
+
+state 10
+
+    (4) columns -> ID DATATYPE .
+
+    RPAREN          reduce using rule 4 (columns -> ID DATATYPE .)
+    COMMA           reduce using rule 4 (columns -> ID DATATYPE .)
+
+
+state 11
+
+    (1) table -> init_mark table_pmb LPAREN columns RPAREN .
+
+    $end            reduce using rule 1 (table -> init_mark table_pmb LPAREN columns RPAREN .)
+
+
+state 12
+
+    (5) columns -> columns COMMA . ID DATATYPE
+
+    ID              shift and go to state 13
+
+
+state 13
+
+    (5) columns -> columns COMMA ID . DATATYPE
+
+    DATATYPE        shift and go to state 14
+
+
+state 14
+
+    (5) columns -> columns COMMA ID DATATYPE .
+
+    RPAREN          reduce using rule 5 (columns -> columns COMMA ID DATATYPE .)
+    COMMA           reduce using rule 5 (columns -> columns COMMA ID DATATYPE .)
+
